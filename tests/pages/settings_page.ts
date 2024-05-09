@@ -1,4 +1,3 @@
-// onboarding_page.ts
 import { Locator, Page } from '@playwright/test';
 import path from 'path';
 export class SettingsPage {
@@ -40,11 +39,6 @@ export class SettingsPage {
         return await this.page.waitForEvent('download');
     }
 
-    async saveDownloadedFile(download: any, pathToExtension: string) {
-        let secretFilePath = pathToExtension + download.suggestedFilename();
-        await download.saveAs(secretFilePath);
-    }
-
     async downloadSecretPhrase(): Promise<string> {
         const downloadPromise = this.waitForDownloadEvent();
         await this.clickDownloadButton();
@@ -59,19 +53,6 @@ export class SettingsPage {
 
     async closeTipsModalPopup() {
         await this.page.getByTestId('close-modal-button').click();
-    }
-
-    async clickHomeItem() {
-        await this.page.getByTestId('navigation-item-home').click();
-    }
-
-    async backUpWalletByEnteringSecretPhrase(password: string, secretPhrase: string[]) {
-        await this.clickShowButton();
-        await this.fillPasswordField(password);
-        await this.clickSubmitButton();
-        await this.clickProceedButton();
-        await this.clickValidSecretPhraseButtons(secretPhrase);
-        await this.clickNextButton();
     }
 
 

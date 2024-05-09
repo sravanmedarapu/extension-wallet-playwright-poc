@@ -3,13 +3,16 @@ import { Page, Locator } from '@playwright/test';
 
 export class OnboardingPage {
 
+    public readonly onBoardingPageTitle = this.page.getByTestId('onboarding-step-title');
+
     private passwordFieldTestId = 'password-field';
     private checkboxTermsOfServiceTestId = this.page.getByTestId('checkbox-terms-of-service');
-    private navigationItemSettingsTestId = this.page.getByTestId('navigation-item-settings');
     public readonly trustSetAsDefaultWalletToggle: Locator = this.page.getByRole('switch', { name: 'default-wallet' });
     public readonly openWallet: Locator = this.page.getByRole('button', { name: 'Open wallet' });
 
-    private readonly createNewWalletButton = this.page.getByRole('button', { name: 'Create a new wallet' });
+    public readonly createNewWalletButton = this.page.getByRole('button', { name: 'Create a new wallet' });
+    public readonly importOrRecoverWalletButton = this.page.getByRole('button', { name: 'Import or recover wallet' });
+    public readonly ledgerButton = this.page.getByRole('button', { name: 'Ledger' });
 
     private readonly nextButton = this.page.getByRole('button', { name: 'Next' });
 
@@ -19,10 +22,6 @@ export class OnboardingPage {
 
     private readonly openWalletButton = this.page.getByRole('button', { name: 'Open wallet' });
 
-    private readonly gotItBytton = this.page.getByRole('button', { name: 'Got it' });
-
-    private readonly readyToUseWalletButton = this.page.getByRole('button', { name: 'I’m ready to use Trust Wallet' });
-
     private readonly viewSecretPhraseButton = this.page.getByText('View Secret Phrase');
 
     private readonly revealButton = this.page.getByRole('button', { name: 'Reveal' });
@@ -30,20 +29,6 @@ export class OnboardingPage {
     private readonly downloadButton = this.page.getByRole('button', { name: 'Download' });
 
     constructor(private page: Page) {}
-
-    async goto() {
-        await this.page.goto('/home.html#/onboarding');
-    }
-    async goToOnboarding(extensionId: string, context) {
-        await this.page.goto(`chrome-extension://${extensionId}/home.html#/onboarding`);
-        // Find the extension tab and close it
-        // let pages = await context.pages();
-        // for (let pageId of pages) {
-        //     if (this.page != pageId) {
-        //     await pageId.close();
-        //     }
-        // }
-    }
 
     async clickCreateNewWalletButton() {
         await this.createNewWalletButton.click();
@@ -82,18 +67,6 @@ export class OnboardingPage {
 
     async clickOpenWallet() {
         await this.openWalletButton.click();
-    }
-
-    async clickGotIt() {
-        await this.gotItBytton.click();
-    }
-
-    async clickReadyToUseTrustWallet() {
-        await this.readyToUseWalletButton.click();
-    }
-
-    async clickNavigationItemSettings() {
-        await this.navigationItemSettingsTestId.click();
     }
 
     async clickViewSecretPhrase() {
