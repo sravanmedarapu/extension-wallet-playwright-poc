@@ -1,91 +1,112 @@
 // onboarding_page.ts
-import { Page } from '@playwright/test';
+import { Page, Locator } from '@playwright/test';
 
 export class OnboardingPage {
-    private page: Page;
-    private passwordFieldLocator = 'div';
     private passwordFieldTestId = 'password-field';
-    private checkboxTermsOfServiceTestId = 'checkbox-terms-of-service';
-    private navigationItemSettingsTestId = 'navigation-item-settings';
-    private passwordFieldInputGroupTestId = 'password-field-input-group';
-    private downloadButtonRole = 'button';
-    private downloadButtonName = 'Download';
+    private checkboxTermsOfServiceTestId = this.page.getByTestId('checkbox-terms-of-service');
+    private navigationItemSettingsTestId = this.page.getByTestId('navigation-item-settings');
+    public readonly trustSetAsDefaultWalletToggle: Locator = this.page.getByRole('switch', { name: 'default-wallet' });
+    public readonly openWallet: Locator = this.page.getByRole('button', { name: 'Open wallet' });
 
-    constructor(page: Page) {
-        this.page = page;
-    }
+    private readonly createNewWalletButton = this.page.getByRole('button', { name: 'Create a new wallet' });
 
-    async goToOnboarding(extensionId: string) {
+    private readonly nextButton = this.page.getByRole('button', { name: 'Next' });
+
+    private readonly noThankyouButton = this.page.getByRole('button', { name: 'No thanks' });
+
+    private readonly shareDateButton = this.page.getByRole('button', { name: 'Share data' });
+
+    private readonly openWalletButton = this.page.getByRole('button', { name: 'Open wallet' });
+
+    private readonly gotItBytton = this.page.getByRole('button', { name: 'Got it' });
+
+    private readonly readyToUseWalletButton = this.page.getByRole('button', { name: 'I’m ready to use Trust Wallet' });
+
+    private readonly viewSecretPhraseButton = this.page.getByText('View Secret Phrase');
+
+    private readonly revealButton = this.page.getByRole('button', { name: 'Reveal' });
+
+    private readonly downloadButton = this.page.getByRole('button', { name: 'Download' });
+
+    constructor(private page: Page) {}
+
+    async goToOnboarding(extensionId: string, context) {
         await this.page.goto(`chrome-extension://${extensionId}/home.html#/onboarding`);
+        // Find the extension tab and close it
+        let pages = await context.pages();
+        for (let pageId of pages) {
+            if (this.page != pageId) {
+            await pageId.close();
+            }
+        }
     }
 
-    async takeScreenshot() {
-        await this.page.screenshot({ path: 'screenshot.png' });
-    }
-
-    async clickCreateNewWallet() {
-        await this.page.getByRole('button', { name: 'Create a new wallet' }).click();
+    async clickCreateNewWalletButton() {
+        await this.createNewWalletButton.click();
     }
 
     async fillPasswordField(password: string) {
         await this.page.getByTestId(this.passwordFieldTestId).nth(0).fill(password);
         await this.page.getByTestId(this.passwordFieldTestId).nth(1).fill(password);
+        
+    }
+
+    async fillePasswordScreen(password: string) {
+        await this.fillPasswordField(password)
+        await this.checkTermsOfService();
+        await this.clickNextButton();
     }
 
     async checkTermsOfService() {
-        await this.page.getByTestId(this.checkboxTermsOfServiceTestId).check();
+        await this.checkboxTermsOfServiceTestId.check();
     }
 
-    async clickNext() {
-        await this.page.getByRole('button', { name: 'Next' }).click();
+    async clickNextButton() {
+        await this.nextButton.click();
+    }
+    
+    async clickNoThankyouButton() {
+        await this.noThankyouButton.click();
+    }
+    async toggleTrustWalletAsDefault() {
+        await this.trustSetAsDefaultWalletToggle.click();
     }
 
-    async clickShareData() {
-        await this.page.getByRole('button', { name: 'Share data' }).click();
+    async clickShareDataButton() {
+        await this.shareDateButton.click();
     }
 
     async clickOpenWallet() {
-        await this.page.getByRole('button', { name: 'Open wallet' }).click();
+        await this.openWalletButton.click();
     }
 
     async clickGotIt() {
-        await this.page.getByRole('button', { name: 'Got it' }).click();
+        await this.gotItBytton.click();
     }
 
     async clickReadyToUseTrustWallet() {
-        await this.page.getByRole('button', { name: 'I’m ready to use Trust Wallet' }).click();
+        await this.readyToUseWalletButton.click();
     }
 
     async clickNavigationItemSettings() {
-        await this.page.getByTestId(this.navigationItemSettingsTestId).click();
+        await this.navigationItemSettingsTestId.click();
     }
 
     async clickViewSecretPhrase() {
-        await this.page.getByText('View Secret Phrase').click();
+        await this.viewSecretPhraseButton.click();
     }
 
     async clickReveal() {
-        await this.page.getByRole('button', { name: 'Reveal' }).click();
+        await this.revealButton.click();
     }
 
-    async clickPasswordFieldInputGroup() {
-        await this.page.getByTestId(this.passwordFieldInputGroupTestId).locator('div').first().click();
-    }
-
-    async clickPasswordField() {
-        await this.page.getByTestId(this.passwordFieldTestId).click();
-    }
 
     async clickShow() {
         await this.page.getByRole('button', { name: 'Show' }).click();
     }
 
-    async isVisibleHideButton() {
-        await this.page.isVisible('button', { name: 'Hide' });
-    }
-
     async clickDownloadButton() {
-        await this.page.getByRole(this.downloadButtonRole, { name: this.downloadButtonName }).click();
+        await this.downloadButton.click();
     }
 
     async waitForDownloadEvent() {
@@ -95,5 +116,9 @@ export class OnboardingPage {
     async saveDownloadedFile(download: any, pathToExtension: string) {
         let secretFilePath = pathToExtension + download.suggestedFilename();
         await download.saveAs(secretFilePath);
+    }
+
+    async clickOnOpenWallet() {
+        await this.openWallet.click();
     }
 }

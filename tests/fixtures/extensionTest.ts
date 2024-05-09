@@ -11,6 +11,7 @@ export const test = base.extend<{
       headless: false,
       args: [
         process.env.CI ? `--headless=new` : '',
+        // `--headless=false`,
         `--disable-extensions-except=${pathToExtension}`,
         `--load-extension=${pathToExtension}`,
       ],
@@ -25,16 +26,8 @@ export const test = base.extend<{
     if (!background) {
       background = await context.waitForEvent('serviceworker')
     }
-
+    
     const extensionId = background.url().split('/')[2]
-   
-    let pages = await context.pages();
-    // Find the extension tab and close it
-    for (let page of pages) {
-      if (page.url().includes(extensionId)) {
-        await page.close();
-      }
-    }
     await use(extensionId)
     await context.close()
   },
