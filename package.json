@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "POC for wallet extension using Playwright + Typescript",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "playwright test --project='chromium'"
+  },
   "author": "",
   "license": "ISC",
   "devDependencies": {
