@@ -5,6 +5,14 @@ import { SettingsPage } from '../pages/settings_page';
 import { HomePage } from '../pages/home_page';
 import { getSecretPhraseFromFile } from '../utils/file_utils';
 
+test.beforeEach(async ({ context, page, extensionId }) => {
+  const defaultLaunchPagePromise = context.waitForEvent('page');
+  const defaultLaunchPage = await defaultLaunchPagePromise;
+  await defaultLaunchPage.close();
+  const onboardingPage = new OnboardingPage(page);
+  await onboardingPage.goToOnboarding(extensionId, context);
+});
+
 test.describe('Create wallet', () => {
   test('backup wallet from banner on home screen', async ({
     page,
@@ -12,12 +20,10 @@ test.describe('Create wallet', () => {
     browser,
     context
   }) => {
-    await new Promise(f => setTimeout(f, 1000));
     const onboardingPage = new OnboardingPage(page);
     const settingsPage = new SettingsPage(page);
     const homePage = new HomePage(page);
     const password = 'Trust@1234';
-    await onboardingPage.goToOnboarding(extensionId, context);
     await onboardingPage.clickCreateNewWalletButton();
     await onboardingPage.fillePasswordScreen(password);
  
@@ -56,7 +62,7 @@ test.describe('Create wallet', () => {
     const settingsPage = new SettingsPage(page);
     const homePage = new HomePage(page);
     const password = 'Trust@1234';
-    await onboardingPage.goToOnboarding(extensionId, context);
+    // await onboardingPage.goToOnboarding(extensionId, context);
     await onboardingPage.clickCreateNewWalletButton();
     await onboardingPage.fillePasswordScreen(password);
     await onboardingPage.clickNoThankyouButton();
@@ -83,7 +89,6 @@ test('Default wallet-ON, Product Analytics-ON', async ({
   const settingsPage = new SettingsPage(page);
   const homePage = new HomePage(page);
   const password = 'Trust@1234';
-  await onboardingPage.goToOnboarding(extensionId, context);
   await onboardingPage.clickCreateNewWalletButton();
   await onboardingPage.fillePasswordScreen(password);
 

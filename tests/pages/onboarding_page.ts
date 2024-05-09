@@ -2,6 +2,7 @@
 import { Page, Locator } from '@playwright/test';
 
 export class OnboardingPage {
+
     private passwordFieldTestId = 'password-field';
     private checkboxTermsOfServiceTestId = this.page.getByTestId('checkbox-terms-of-service');
     private navigationItemSettingsTestId = this.page.getByTestId('navigation-item-settings');
@@ -30,15 +31,18 @@ export class OnboardingPage {
 
     constructor(private page: Page) {}
 
+    async goto() {
+        await this.page.goto('/home.html#/onboarding');
+    }
     async goToOnboarding(extensionId: string, context) {
         await this.page.goto(`chrome-extension://${extensionId}/home.html#/onboarding`);
         // Find the extension tab and close it
-        let pages = await context.pages();
-        for (let pageId of pages) {
-            if (this.page != pageId) {
-            await pageId.close();
-            }
-        }
+        // let pages = await context.pages();
+        // for (let pageId of pages) {
+        //     if (this.page != pageId) {
+        //     await pageId.close();
+        //     }
+        // }
     }
 
     async clickCreateNewWalletButton() {
