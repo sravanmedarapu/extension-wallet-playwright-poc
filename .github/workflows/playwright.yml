@@ -7,7 +7,12 @@ on:
 jobs:
   test:
     timeout-minutes: 60
-    runs-on: macos-14
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shardIndex: [1, 2, 3, 4]
+        shardTotal: [4]
     container:
       image: mcr.microsoft.com/playwright:v1.40.0-jammy
     steps:
@@ -24,11 +29,42 @@ jobs:
       run: yarn playwright install chromium --with-deps
 
     - name: Run Playwright tests
-      run: xvfb-run npx playwright test --project='chromium' --trace on -j 2
+      run: xvfb-run npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} --project='chromium' --trace on -j 1
 
-    - uses: actions/upload-artifact@v4
-      if: always()
+    - name: Upload blob report to GitHub Actions Artifacts
+      if: ${{ !cancelled() }}
+      uses: actions/upload-artifact@v4
       with:
-        name: playwright-report
-        path: playwright-report/
-        retention-days: 30
+        name: blob-report-${{ matrix.shardIndex }}
+        path: blob-report
+        retention-days: 1
+  merge-reports:
+      # Merge reports after playwright-tests, even if some shards have failed
+      if: ${{ !cancelled() }}
+      needs: [playwright-tests]
+
+      runs-on: ubuntu-latest
+      steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download blob reports from GitHub Actions Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: all-blob-reports
+          pattern: blob-report-*
+          merge-multiple: true
+
+      - name: Merge into HTML Report
+        run: npx playwright merge-reports --reporter html ./all-blob-reports
+
+      - name: Upload HTML report
+        uses: actions/upload-artifact@v4
+        with:
+          name: html-report--attempt-${{ github.run_attempt }}
+          path: playwright-report
+          retention-days: 14
