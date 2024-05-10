@@ -39,16 +39,16 @@ jobs:
         name: blob-report-${{ matrix.shardIndex }}
         path: blob-report
         retention-days: 1
-    - name: Upload report to GitHub Actions Artifacts
-      if: ${{ !cancelled() }}
-      uses: actions/upload-artifact@v4
-      with:
-        name: playwright-report-${{ matrix.shardIndex }}
-        path: playwright-report/
-        pattern: playwright-report-*
-      #   name: blob-report-${{ matrix.shardIndex }}
-      #   path: blob-report
-      #   retention-days: 1
+    # - name: Upload report to GitHub Actions Artifacts
+    #   if: ${{ !cancelled() }}
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: playwright-report-${{ matrix.shardIndex }}
+    #     path: playwright-report/
+    #     pattern: playwright-report-*
+    #   #   name: blob-report-${{ matrix.shardIndex }}
+    #   #   path: blob-report
+    #   #   retention-days: 1
   merge-reports:
       # Merge reports after playwright-tests, even if some shards have failed
       if: ${{ !cancelled() }}
@@ -63,13 +63,13 @@ jobs:
       - name: Install dependencies
         run: yarn
 
-      - name: Download reports from GitHub Actions Artifacts
-        uses: actions/download-artifact@v4
-        continue-on-error: true
-        with:
-          path: all-playwright-report/
-          pattern: playwright-report-*
-          merge-multiple: true
+      # - name: Download reports from GitHub Actions Artifacts
+      #   uses: actions/download-artifact@v4
+      #   continue-on-error: true
+      #   with:
+      #     path: all-playwright-report/
+      #     pattern: playwright-report-*
+      #     merge-multiple: true
       - name: Download blob reports from GitHub Actions Artifacts
         uses: actions/download-artifact@v4
         continue-on-error: true
