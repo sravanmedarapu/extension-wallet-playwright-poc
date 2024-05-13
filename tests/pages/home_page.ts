@@ -28,6 +28,7 @@ export class HomePage {
     }
 
     async clickSearchButton() {
+        await this.searchButton.waitFor({ state: 'visible' });
         await this.searchButton.click();
     }
 

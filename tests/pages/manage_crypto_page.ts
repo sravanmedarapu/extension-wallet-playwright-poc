@@ -39,6 +39,7 @@ export class ManageCryptoPage {
     }
 
     async clickOnAddTokenButton() {
+        await this.addTokenButton.waitFor({ state: 'visible' })
         await this.addTokenButton.click();
     }
 

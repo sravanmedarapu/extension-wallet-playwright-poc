@@ -23,12 +23,12 @@ export default defineConfig({
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: process.env.CI ? [
     ['blob'], // You can combine multiple reporters
-    ['playwright-ctrf-json-reporter', {
-      outputFile: 'ctrf/ctrf-report-${{ matrix.shardIndex }}.json'
-    }],
+    ['playwright-ctrf-json-reporter'],
     ['line']
   ] :
-      'html',
+      [['html'],
+        ['playwright-ctrf-json-reporter'],
+       ],
   // reporter: process.env.CI ? ['blob'] : 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
