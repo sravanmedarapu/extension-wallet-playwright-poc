@@ -1,7 +1,7 @@
 import { Page, Locator } from '@playwright/test';
 
 export class BaseSteps {
-    constructor(private page: Page) {}
+    constructor(protected page: Page) {}
     public settingsTab: Locator = this.page.getByTestId('navigation-item-settings')
     public homeTab: Locator = this.page.getByTestId('navigation-item-home')
    

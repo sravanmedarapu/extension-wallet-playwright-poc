@@ -9,7 +9,8 @@ export class HomePage {
     private readonly gotItButton = this.page.getByRole('button', { name: 'Got it' });
     private readonly readyToUseWalletButton = this.page.getByRole('button', { name: 'I’m ready to use Trust Wallet' });
     private readonly closeTipsModelPopup = this.page.getByTestId('close-modal-button');
-    private readonly searchButton = this.page.getByTestId('wallet-header-manage-crypto-button');
+    readonly searchButton = this.page.getByTestId('wallet-header-manage-crypto-button');
+    readonly manageCryptoButton = this.page.getByRole('button', { name: 'Manage crypto' });
 
     async clickOnGotIt() {
         await this.gotItButton.click();

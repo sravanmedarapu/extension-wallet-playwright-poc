@@ -36,7 +36,11 @@ export class HomePageSteps extends BaseSteps {
   }
 
   async verifyCryptoTokenAddedToHomePage(tokenSymbol: string) {
-    await expect(this.homePage.isTokenVisible(tokenSymbol),
-        `Cant find the custom token ${tokenSymbol} on the home screen`).toBeTruthy();
+    await expect(this.homePage.manageCryptoButton).toBeVisible();
+    await expect(this.homePage.searchButton).toBeVisible();
+    await expect(this.page.getByText(tokenSymbol, { exact : true }),
+        `Cant find the custom token ${tokenSymbol} on the home screen`).toBeVisible();
+  // await expect(this.homePage.isTokenVisible(tokenSymbol),
+  //       `Cant find the custom token ${tokenSymbol} on the home screen`).toBeTruthy();
   }
 }
