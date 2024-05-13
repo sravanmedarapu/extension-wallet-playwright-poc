@@ -14,7 +14,7 @@ test.beforeEach(async ({ context, page, extensionId }) => {
 });
 
 test.describe('Import wallet', () => {
-    test(`Import a 12 words secret phrase wallet`, async () => {
+    test(`Importing custom tokens - Ethereum, Tron, Fantom, Arbitrum`, async () => {
         let password = config.get("password")
         await Steps.onboarding.verifyOnboardingPage();
         await Steps.onboarding.createNewWallet({ password: password, agreeToShareData: true, agreeToSetTrustWalletAsDefault: true });

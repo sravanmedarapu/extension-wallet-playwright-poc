@@ -23,7 +23,8 @@ export default defineConfig({
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: process.env.CI ? [
     ['blob'], // You can combine multiple reporters
-    ['playwright-ctrf-json-reporter', {}]
+    ['playwright-ctrf-json-reporter', {}],
+    ['line']
   ] :
       'html',
   // reporter: process.env.CI ? ['blob'] : 'html',
