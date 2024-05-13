@@ -26,4 +26,17 @@ export class HomePageSteps extends BaseSteps {
   async clickOnBackUpBanner() {
     await this.homePage.clickOnBackUpBanner();
   }
+
+  async clickSearchButton() {
+    await this.homePage.clickSearchButton();
+  }
+
+  async verifyNoCryptoActivatedMessageVisible() {
+    await expect(this.homePage.isNoCryptoActivatedMessageVisible()).toBeTruthy();
+  }
+
+  async verifyCryptoTokenAddedToHomePage(tokenSymbol: string) {
+    await expect(this.homePage.isTokenVisible(tokenSymbol),
+        `Cant find the custom token ${tokenSymbol} on the home screen`).toBeTruthy();
+  }
 }

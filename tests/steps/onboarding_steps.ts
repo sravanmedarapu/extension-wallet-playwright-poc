@@ -19,15 +19,59 @@ export class OnboardingSteps extends BaseSteps {
     await expect(this.onboardingPage.ledgerButton).toBeVisible();
   }
 
+  async createNewWallet({ password, agreeToShareData: shareData, agreeToSetTrustWalletAsDefault: setTrustWalletAsDefault }:
+      { password: string, agreeToShareData: boolean , agreeToSetTrustWalletAsDefault: boolean}) {
+      await this.onboardingPage.clickCreateNewWalletButton();
+      await this.onboardingPage.fillPasswordScreen(password);
+      await this.setShareDatePermissions(shareData);
+      await this.setTrustWalletAsDefaultWallet(setTrustWalletAsDefault)
+      await this.openWallet();
+  }
 
-async createNewWallet({ password, agreeToShareData: shareData, agreeToSetTrustWalletAsDefault: setTrustWalletAsDefault }: 
-    { password: string, agreeToShareData: boolean , agreeToSetTrustWalletAsDefault: boolean}) {
-    await this.onboardingPage.clickCreateNewWalletButton();
-    await this.onboardingPage.fillePasswordScreen(password);
-    await this.setShareDatePermissions(shareData);
-    await this.setTrustWalletAsDefaultWallet(setTrustWalletAsDefault)
+  async openWallet() {
     await this.onboardingPage.clickOpenWallet();
-}
+  }
+
+  async importOrRecoverWallet(password: string) {
+    await this.onboardingPage.clickImportOrRecoverWalletButton();
+    await this.onboardingPage.fillPasswordScreen(password);
+  }
+
+  async inputSecretPhrase(seeds: string): Promise<void> {
+    const seedArray: string[] = seeds.split(" ");
+    await this.onboardingPage.selectWordSecretPhraseDropdown(seedArray.length)
+    await this.verifySecretPhraseDropDown(seedArray);
+    await this.onboardingPage.inputSecretPhrase(seeds);
+  }
+
+  async pasteSecretPhrase(seeds: string) {
+    // Paste the secret phrase
+    await this.onboardingPage.pasteSecretPhraseAndClickNext(seeds);
+    // Click the submit button
+    await this.onboardingPage.nextButton.click();
+  }
+
+  async clearAndVerifySecretPhrasesCleared() {
+    // clear all the input fields
+    await this.onboardingPage.clearAllButton.click();
+    let secretInputFields  = await this.onboardingPage.getAllSecretPhraseInputFields()
+    for(const inputField of secretInputFields) {
+      await expect(inputField, "Secrete Phrase Input field should be empty after clearing").toHaveValue('');
+    }
+  }
+
+  private async verifySecretPhraseDropDown(seedArray: string[]) {
+    let secretPhraseInputFields = await this.onboardingPage.getAllSecretPhraseInputFields()
+    if (seedArray.length === 24) {
+      expect(secretPhraseInputFields.length, 'The count of input fields should be 24').toBe(24);
+      expect(seedArray.length, 'The count of seeds should be 24').toBe(24);
+    } else {
+      expect(secretPhraseInputFields.length, 'The count of input fields should be 12').toBe(12,);
+      expect(seedArray.length, "The count of seeds should be 12").toBe(12);
+    }
+  }
+
+
 
   async toggleOffTrustWalletAsDefault() {
     await expect(this.onboardingPage.trustSetAsDefaultWalletToggle).toBeChecked();
@@ -47,5 +91,9 @@ async createNewWallet({ password, agreeToShareData: shareData, agreeToSetTrustWa
     if (!agreeToSetTrustWalletAsDefault) {
       await this.onboardingPage.toggleTrustWalletAsDefault();
     }
+  }
+
+  async verifySuccessfulWalletImport() {
+    await expect(this.onboardingPage.onBoardingPageTitle, "The wallet success message is not there. Please check...").toHaveText("You have successfully imported your wallet!");
   }
 }

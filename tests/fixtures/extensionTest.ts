@@ -1,5 +1,6 @@
 import { BrowserContext, chromium, test as base } from '@playwright/test'
 import path from 'path'
+import propertiesReader from 'properties-reader';
 
 export const test = base.extend<{
   context: BrowserContext

@@ -20,9 +20,8 @@ export class BaseSteps {
     async navigateToSettings() {
         await this.settingsTab.click();
     }
+
     async navigateToHome() {
         await this.homeTab.click();
     }
-
-
 }

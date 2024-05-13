@@ -1,6 +1,7 @@
 // utils.ts
 import fs from 'fs';
-import path from 'path';
+import propertiesReader from 'properties-reader';
+import path from "path";
 
 export function getSecretPhraseFromFile(filePath: string): string[] {
     console.log("Getting secret phrase from file");
@@ -16,4 +17,10 @@ export function getSecretPhraseFromFile(filePath: string): string[] {
         console.error(e);
     }
     return secretPhrase;
+}
+
+function loadProperties() {
+    const propertiesFile = path.join(__dirname, 'resources/testdata.properties');
+    // const properties = propertiesReader(propertiesFile);
+    return propertiesReader(propertiesFile);;
 }

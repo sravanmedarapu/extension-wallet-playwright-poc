@@ -1,5 +1,6 @@
 import { test, expect } from '../fixtures/extensionTest'
 import { Steps } from '../steps/steps';
+import config from "../utils/config";
 
 test.beforeEach(async ({ context, page, extensionId }) => {
   const defaultLaunchPagePromise = context.waitForEvent('page');
@@ -12,7 +13,7 @@ test.beforeEach(async ({ context, page, extensionId }) => {
 
 test.describe('Create wallet', () => {
   test('backup wallet from banner on home screen', async () => {
-    const password = 'Trust@1234';
+    let password = config.get("password")
     await Steps.onboarding.verifyOnboardingPage();
     await Steps.onboarding.createNewWallet({ password: password, agreeToShareData: true, agreeToSetTrustWalletAsDefault: true });
 
@@ -32,7 +33,7 @@ test.describe('Create wallet', () => {
   })
 
   test('Default wallet-OFF, Product Analytics-OFF', async () => {
-    const password = 'Trust@1234';
+    let password = config.get("password")
     await Steps.onboarding.verifyOnboardingPage();
     await Steps.onboarding.createNewWallet({ 
       password: password, 
@@ -48,7 +49,7 @@ test.describe('Create wallet', () => {
   })
 
   test('Default wallet-ON, Product Analytics-ON', async () => {
-    const password = 'Trust@1234';
+    let password = config.get("password")
     await Steps.onboarding.verifyOnboardingPage();
     await Steps.onboarding.createNewWallet({ 
       password: password, 

@@ -4,14 +4,15 @@ import { Locator, Page } from '@playwright/test';
 export class HomePage {
     constructor(private page: Page) {}
     public backupBanner: Locator = this.page.getByTestId('backup-seedphrase-alert')
-    public settingsTab: Locator = this.page.getByTestId('navigation-item-settings')
-   
-    private readonly gotItBytton = this.page.getByRole('button', { name: 'Got it' });
+
+    readonly noCryptoActivatedMessage = this.page.getByText('No crypto activated');
+    private readonly gotItButton = this.page.getByRole('button', { name: 'Got it' });
     private readonly readyToUseWalletButton = this.page.getByRole('button', { name: 'I’m ready to use Trust Wallet' });
     private readonly closeTipsModelPopup = this.page.getByTestId('close-modal-button');
+    private readonly searchButton = this.page.getByTestId('wallet-header-manage-crypto-button');
 
     async clickOnGotIt() {
-        await this.gotItBytton.click();
+        await this.gotItButton.click();
     }
     async clickReadyToUseTrustWallet() {
         await this.readyToUseWalletButton.click();
@@ -20,11 +21,20 @@ export class HomePage {
         await this.backupBanner.click();
         await this.page.waitForTimeout(1000);
     }
-    async clickSettingsTab() {
-        await this.settingsTab.click();
-    }
 
     async closeTipsPopup() {
         await this.closeTipsModelPopup.click();
-      }
+    }
+
+    async clickSearchButton() {
+        await this.searchButton.click();
+    }
+
+    async isNoCryptoActivatedMessageVisible() {
+        return await this.noCryptoActivatedMessage.isVisible();
+    }
+
+    async isTokenVisible(tokenSymbol: string): Promise<boolean> {
+        return await this.page.getByText(tokenSymbol, { exact : true }).isVisible();
+    }
 }

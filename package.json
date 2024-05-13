@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "properties-parser": "^0.6.0",
+    "properties-reader": "^2.3.0",
     "typescript": "^5.4.5"
   }
 }
