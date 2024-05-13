@@ -33,7 +33,7 @@ test.describe('Import wallet', () => {
             log(`Adding token ${symbol} with address ${address} on network ${networkToken.network}`)
             await Steps.home.clickSearchButton()
             await Steps.manageCrypto.selectTokenNetwork(networkToken.network, address)
-        await Steps.manageCrypto.validateTokenSymbol(symbol)
+            await Steps.manageCrypto.validateTokenSymbol(symbol)
             await Steps.manageCrypto.addToken()
             await Steps.home.verifyCryptoTokenAddedToHomePage(symbol)
         }
