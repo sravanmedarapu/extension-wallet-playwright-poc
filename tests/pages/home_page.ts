@@ -24,6 +24,7 @@ export class HomePage {
     }
 
     async closeTipsPopup() {
+        await this.closeTipsModelPopup.waitFor({ state: 'visible' });
         await this.closeTipsModelPopup.click();
     }
 
