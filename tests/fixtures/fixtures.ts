@@ -12,10 +12,10 @@ export const test = base.extend<{
     const pathToExtension = path.join(__dirname, '../resources/extension/release-2.12.0-9fe78fb-poc')
     const context = await chromium.launchPersistentContext('', {
       headless: false,
-      recordVideo: {
-        dir: "./recordings"
-      }
-        ,
+      // recordVideo: {
+      //   dir: "./recordings"
+      // }
+      //   ,
       args: [
         // process.env.CI ? `--headless=new` : '',
         // `--headless=false`,
