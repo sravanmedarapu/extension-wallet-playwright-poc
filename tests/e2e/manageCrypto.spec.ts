@@ -1,17 +1,8 @@
-import { test } from '../fixtures/extensionTest'
+import { test } from '../fixtures/fixtures'
 import { Steps } from '../steps/steps';
 import { NetworkDTO } from '../utils/dto/networkDto';
 import config from '../utils/config';
 import { log } from 'console';
-
-test.beforeEach(async ({ context, page, extensionId }) => {
-    const defaultLaunchPagePromise = context.waitForEvent('page');
-    const defaultLaunchPage = await defaultLaunchPagePromise;
-    // TODO: defaultLaunchPage.close() sometimes closing actual page instead of extension page
-    // await defaultLaunchPage.close();
-    Steps.initializeSteps(page);
-    await Steps.onboarding.goToOnboarding(extensionId, context);
-});
 
 test.describe('Import wallet', () => {
     test(`Importing custom tokens - Ethereum, Tron, Fantom, Arbitrum`, async () => {

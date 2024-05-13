@@ -1,6 +1,7 @@
 import { BrowserContext, chromium, test as base } from '@playwright/test'
 import path from 'path'
 import propertiesReader from 'properties-reader';
+import {Steps} from "../steps/steps";
 
 export const test = base.extend<{
   context: BrowserContext
@@ -33,5 +34,23 @@ export const test = base.extend<{
     await context.close()
   },
 })
+
+test.beforeEach(async ({ context, page, extensionId }) => {
+  console.log('setup: beforeEach');
+  const defaultLaunchPagePromise = context.waitForEvent('page');
+  const defaultLaunchPage = await defaultLaunchPagePromise;
+  // TODO: defaultLaunchPage.close() sometimes closing actual page instead of extension page
+  // await defaultLaunchPage.close();
+  Steps.initializeSteps(page);
+  await Steps.onboarding.goToOnboarding(extensionId, context);
+});
+
+test.afterEach(async ({ page }, testInfo) => {
+  console.log('teardown: afterEach');
+
+  const screenshot = await page. screenshot();
+  await testInfo. attach('screenshot', { body: screenshot, contentType: 'image/ png' });
+})
+
 
 export const expect = test.expect
