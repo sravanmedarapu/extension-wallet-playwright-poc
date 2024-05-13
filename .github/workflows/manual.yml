@@ -47,6 +47,7 @@ jobs:
       run: xvfb-run npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} --project='chromium' --trace on -j 1
     
     - name: Publish Test Summary Results
+      if: ${{ !cancelled() }}
       run: npx github-actions-ctrf ctrf/ctrf-report.json
    
     - name: Upload blob report to GitHub Actions Artifacts123
