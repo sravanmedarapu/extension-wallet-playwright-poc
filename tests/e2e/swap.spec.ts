@@ -13,10 +13,11 @@ test.describe('Swap', () => {
 
         await Steps.swap.selectFromNetwork("Polygon");
         await Steps.swap.verifyDefaultFromTokenName("MATIC");
-        await Steps.swap.enterFromAmount("0.01");
 
         await Steps.swap.selectToNetwork("Polygon");
         await Steps.swap.selectToToken("USDT");
+
+        await Steps.swap.enterFromAmount("0.01");
         await Steps.swap.verifySlippageTolerance();
 
         await Steps.swap.clickSwapAndVerifySwapConfirmPage();
