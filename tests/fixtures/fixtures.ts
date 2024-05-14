@@ -41,14 +41,14 @@ export const test = base.extend<{
   saveVideo: [
     async ({ page }: any, use: () => any, testInfo: any) => {
       await use();
-      if (testInfo.status === 'failed') {
-        const originalVideoPath = await page.video().path();
-        testInfo.attachments.push({
-          name: 'video',
-          path: originalVideoPath,
-          contentType: 'video/webm',
-        });
-        }
+      // if (testInfo.status === 'failed') {
+      //   const originalVideoPath = await page.video().path();
+      //   testInfo.attachments.push({
+      //     name: 'video',
+      //     path: originalVideoPath,
+      //     contentType: 'video/webm',
+      //   });
+      //   }
     },
     { auto: true },
   ],
