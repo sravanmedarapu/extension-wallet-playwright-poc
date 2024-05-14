@@ -53,6 +53,7 @@ export class SwapPage {
     }
 
     async enterFromAmount(amount: string) {
+        await this.swampFromAmountInputField.waitFor({ state: 'visible' });
         await this.swampFromAmountInputField.fill(amount);
     }
 
