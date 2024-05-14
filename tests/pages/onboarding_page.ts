@@ -67,7 +67,7 @@ export class OnboardingPage {
         return await this.secretPhraseInputFields.all()
     }
 
-    public async pasteSecretPhraseAndClickNext(seeds: string): Promise<void> {
+    public async pasteSecretPhrase(seeds: string): Promise<void> {
         let firstField   =  (await this.getAllSecretPhraseInputFields())[0]
         await firstField.focus();
         // await this.page.evaluate("navigator.clipboard.writeText(" + seeds+ ")")

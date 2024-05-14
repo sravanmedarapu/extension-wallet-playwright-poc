@@ -3,6 +3,7 @@ import { SettingsPage } from '../pages/settings_page';
 import { HomePage } from '../pages/home_page';
 import { BrowserContext, expect } from 'playwright/test';
 import { BaseSteps } from './base_steps';
+import {Steps} from "./steps";
 
 export class OnboardingSteps extends BaseSteps {
   private onboardingPage: OnboardingPage;
@@ -28,6 +29,16 @@ export class OnboardingSteps extends BaseSteps {
       await this.openWallet();
   }
 
+  async importWalletByEnteringSecretPhrase({password, walletSeed, agreeToShareData, setTrustWalletAsDefault}: {password: string, walletSeed: string, agreeToShareData: boolean, setTrustWalletAsDefault: boolean
+  }) {
+    await Steps.onboarding.importOrRecoverWallet(password);
+    await Steps.onboarding.pasteSecretPhraseAndClickNext(walletSeed);
+    await Steps.onboarding.setShareDatePermissions(agreeToShareData);
+    await this.setTrustWalletAsDefaultWallet(setTrustWalletAsDefault)
+    await this.openWallet();
+    await Steps.home.closeTipsModalPopup();
+  }
+
   async openWallet() {
     await this.onboardingPage.clickOpenWallet();
   }
@@ -44,9 +55,13 @@ export class OnboardingSteps extends BaseSteps {
     await this.onboardingPage.inputSecretPhrase(seeds);
   }
 
-  async pasteSecretPhrase(seeds: string) {
+  async pasteSecretPhraseAndClickNext(seeds: string) {
     // Paste the secret phrase
-    await this.onboardingPage.pasteSecretPhraseAndClickNext(seeds);
+    await this.onboardingPage.pasteSecretPhrase(seeds);
+    await this.clickNext();
+  }
+
+  async clickNext() {
     // Click the submit button
     await this.onboardingPage.nextButton.click();
   }

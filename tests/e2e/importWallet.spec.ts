@@ -13,7 +13,7 @@ test.describe('Import wallet', () => {
             await Steps.onboarding.importOrRecoverWallet(password);
             await Steps.onboarding.inputSecretPhrase(walletSeed);
             await Steps.onboarding.clearAndVerifySecretPhrasesCleared();
-            await Steps.onboarding.pasteSecretPhrase(walletSeed);
+            await Steps.onboarding.pasteSecretPhraseAndClickNext(walletSeed);
             await Steps.onboarding.setShareDatePermissions(false);
             await Steps.onboarding.verifySuccessfulWalletImport();
         });

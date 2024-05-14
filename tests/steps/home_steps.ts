@@ -19,6 +19,10 @@ export class HomePageSteps extends BaseSteps {
     await this.homePage.closeTipsPopup();
   }
 
+  async clickSwapButton() {
+    await this.homePage.clickSwapButton();
+  }
+
   async verifyBackupBannerNotVisible() {
     await expect(this.homePage.backupBanner).not.toBeVisible();
   }

@@ -10,6 +10,7 @@ export class HomePage {
     private readonly readyToUseWalletButton = this.page.getByRole('button', { name: 'I’m ready to use Trust Wallet' });
     private readonly closeTipsModelPopup = this.page.getByTestId('close-modal-button');
     readonly searchButton = this.page.getByTestId('wallet-header-manage-crypto-button');
+    readonly swapButton = this.page.getByTestId('wallet-board-swap-button');
     readonly manageCryptoButton = this.page.getByRole('button', { name: 'Manage crypto' });
 
     async clickOnGotIt() {
@@ -31,6 +32,11 @@ export class HomePage {
     async clickSearchButton() {
         await this.searchButton.waitFor({ state: 'visible' });
         await this.searchButton.click();
+    }
+
+    async clickSwapButton() {
+        await this.swapButton.waitFor({ state: 'visible' });
+        await this.swapButton.click();
     }
 
     async isNoCryptoActivatedMessageVisible() {

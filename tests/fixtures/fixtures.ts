@@ -60,7 +60,7 @@ test.beforeEach(async ({ context, page, extensionId }) => {
   const defaultLaunchPage = await defaultLaunchPagePromise;
   // TODO: defaultLaunchPage.close() sometimes closing actual page instead of extension page
   // await defaultLaunchPage.close();
-  Steps.initializeSteps(page);
+  Steps.initializeSteps(page, context);
   await Steps.onboarding.goToOnboarding(extensionId, context);
 });
 

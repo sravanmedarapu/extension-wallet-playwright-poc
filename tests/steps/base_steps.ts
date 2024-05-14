@@ -1,7 +1,7 @@
-import { Page, Locator } from '@playwright/test';
+import {Page, Locator, BrowserContext} from '@playwright/test';
 
 export class BaseSteps {
-    constructor(protected page: Page) {}
+    constructor(protected page: Page, protected browserContext: BrowserContext) {}
     public settingsTab: Locator = this.page.getByTestId('navigation-item-settings')
     public homeTab: Locator = this.page.getByTestId('navigation-item-home')
    
