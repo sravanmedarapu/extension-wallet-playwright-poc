@@ -8,6 +8,7 @@ export class BaseSteps {
 
     async goToOnboarding(extensionId: string, context) {
         await this.page.goto(`chrome-extension://${extensionId}/home.html#/onboarding`);
+        await this.page.waitForLoadState('domcontentloaded');
         // Find the extension tab and close it
         // let pages = await context.pages();
         // for (let pageId of pages) {
