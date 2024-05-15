@@ -9,7 +9,7 @@ export class SwapPage {
     readonly searchCryptoToInputField = this.page.getByPlaceholder('Search crypto')
     readonly swapFromTokenNameField: Locator = this.page.getByTestId('swap-from-asset-selector')
     readonly swampFromAmountInputField: Locator = this.page.getByTestId('swap-from-amount-input')
-    readonly slippageToleranceField: Locator = this.page.locator('xpath=//*[contains(text(),"Slippage Tolerance")]//following-sibling::*/small[@data-testid="swap-slippage"]')
+    readonly slippageToleranceField: Locator = this.page.getByTestId('swap-slippage')
 
     async clickSwapToTokenButton() {
         await this.swapToTokenButton.click();
@@ -25,7 +25,6 @@ export class SwapPage {
     }
 
     async getSlippageTolerance() {
-        await this.page.waitForLoadState('domcontentloaded');
         return await this.slippageToleranceField.textContent();
     }
 
