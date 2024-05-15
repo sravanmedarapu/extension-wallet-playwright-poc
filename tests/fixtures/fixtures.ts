@@ -17,7 +17,7 @@ export const test = base.extend<{
       // }
       //   ,
       args: [
-        // process.env.CI ? `--headless=new` : '',
+        process.env.CI ? `--headless=new` : '',
         // `--headless=false`,
         `--disable-extensions-except=${pathToExtension}`,
         `--load-extension=${pathToExtension}`,
