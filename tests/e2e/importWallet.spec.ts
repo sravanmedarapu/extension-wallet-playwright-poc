@@ -8,7 +8,7 @@ test.describe('Import wallet', () => {
     testData.set('24 words', config.get('24WordWalletSeed'));
     let password = config.get("password")
     for (let [key, walletSeed] of testData) {
-        test(`Import a ${key} secret phrase wallet`, async () => {
+        test(`import${key}WordWalletTest: Import a ${key} secret phrase wallet`, async () => {
             await Steps.onboarding.verifyOnboardingPage();
             await Steps.onboarding.importOrRecoverWallet(password);
             await Steps.onboarding.inputSecretPhrase(walletSeed);

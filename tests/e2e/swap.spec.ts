@@ -3,7 +3,7 @@ import {Steps} from "../steps/steps";
 import config from "../utils/config";
 
 test.describe('Swap', () => {
-    test('Swap coin to token on Polygon', async ({ page }) => {
+    test('swapPolygonTokenTest: Swap coin to token on Polygon', async ({ page }) => {
         let password = config.get("password")
         let seed = config.get("swapWalletSeed")
         await Steps.onboarding.verifyOnboardingPage();

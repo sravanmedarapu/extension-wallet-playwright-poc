@@ -5,7 +5,7 @@ import config from '../utils/config';
 import { log } from 'console';
 
 test.describe('Import wallet', () => {
-    test(`Importing custom tokens - Ethereum, Tron, Fantom, Arbitrum`, async () => {
+    test(`importCustomTokenTest: Importing custom tokens - Ethereum, Tron, Fantom, Arbitrum`, async () => {
         let password = config.get("password")
         await Steps.onboarding.verifyOnboardingPage();
         await Steps.onboarding.createNewWallet({ password: password, agreeToShareData: true, agreeToSetTrustWalletAsDefault: true });

@@ -12,7 +12,7 @@ import config from "../utils/config";
 // });
 
 test.describe('Create wallet', () => {
-  test('backup wallet from banner on home screen', async () => {
+  test('createWalletAndBackItUpFromHomeScreenTest: backup wallet from banner on home screen', async () => {
     let password = config.get("password")
     await Steps.onboarding.verifyOnboardingPage();
     await Steps.onboarding.createNewWallet({ password: password, agreeToShareData: true, agreeToSetTrustWalletAsDefault: true });
@@ -32,7 +32,7 @@ test.describe('Create wallet', () => {
     await Steps.home.verifyBackupBannerNotVisible()
   })
 
-  test('Default wallet-OFF, Product Analytics-OFF', async () => {
+  test('createWalletTurnOffOptionsTest: Default wallet-OFF, Product Analytics-OFF', async () => {
     let password = config.get("password")
     await Steps.onboarding.verifyOnboardingPage();
     await Steps.onboarding.createNewWallet({ 
@@ -48,7 +48,7 @@ test.describe('Create wallet', () => {
     await Steps.settings.verifyTrustWalletAsDefaultToggleState({isOn: false});
   })
 
-  test('Default wallet-ON, Product Analytics-ON', async () => {
+  test('createWalletTurnOnOptionsTest: Default wallet-ON, Product Analytics-ON', async () => {
     let password = config.get("password")
     await Steps.onboarding.verifyOnboardingPage();
     await Steps.onboarding.createNewWallet({ 
