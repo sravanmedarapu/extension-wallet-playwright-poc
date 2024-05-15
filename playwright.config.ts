@@ -25,7 +25,8 @@ export default defineConfig({
     ['blob'], // You can combine multiple reporters
     ['playwright-ctrf-json-reporter'],
     ['line'],
-    ['github']
+    ['github'],
+    ['junit'],
   ] :
       [['html'],
         ['playwright-ctrf-json-reporter'],
