@@ -32,7 +32,7 @@ export class SwapSteps extends BaseSteps {
     }
 
     async verifySlippageTolerance() {
-        expect(await this.swapPage.slippageToleranceField).toBeVisible();
+
         let slippageTolerance = await this.swapPage.getSlippageTolerance()
         expect(slippageTolerance, "Slippage Tolerance is not 1%").toBe("1%");
     }

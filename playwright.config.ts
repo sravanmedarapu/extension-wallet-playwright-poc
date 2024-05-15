@@ -24,9 +24,6 @@ export default defineConfig({
   reporter: process.env.CI ? [
     ['blob'], // You can combine multiple reporters
     ['playwright-ctrf-json-reporter'],
-    ['line'],
-    ['github'],
-    ['junit'],
   ] :
       [['html'],
         ['playwright-ctrf-json-reporter'],

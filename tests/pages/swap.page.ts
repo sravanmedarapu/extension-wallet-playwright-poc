@@ -25,6 +25,7 @@ export class SwapPage {
     }
 
     async getSlippageTolerance() {
+        await this.page.waitForLoadState();
         return await this.slippageToleranceField.textContent();
     }
 
