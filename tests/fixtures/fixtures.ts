@@ -6,16 +6,17 @@ import {Steps} from "../steps/steps";
 
 export const test = base.extend<{
   context: BrowserContext
-  extensionId: string
+  extensionId: string,
+  steps: Steps
 }>({
   context: async ({}, use) => {
     const pathToExtension = path.join(__dirname, '../resources/extension/release-2.12.0-9fe78fb-poc')
     const context = await chromium.launchPersistentContext('', {
       headless: false,
-      // recordVideo: {
-      //   dir: "./recordings"
-      // }
-      //   ,
+      recordVideo: {
+        dir: "./recordings"
+      }
+        ,
       args: [
         process.env.CI ? `--headless=new` : '',
         // `--headless=false`,
@@ -38,37 +39,45 @@ export const test = base.extend<{
     const extensionId = background.url().split('/')[2]
     await use(extensionId)
   },
+  steps: async ({ page, context, extensionId }, use) => {
+    const steps = new Steps(page, context, extensionId);
+    await use(steps);
+  },
   saveVideo: [
     async ({ page }: any, use: () => any, testInfo: any) => {
       await use();
-      // if (testInfo.status === 'failed') {
-      //   const originalVideoPath = await page.video().path();
-      //   testInfo.attachments.push({
-      //     name: 'video',
-      //     path: originalVideoPath,
-      //     contentType: 'video/webm',
-      //   });
-      //   }
+      if (testInfo.status === 'failed') {
+        const originalVideoPath = await page.video().path();
+        testInfo.attachments.push({
+          name: 'video',
+          path: originalVideoPath,
+          contentType: 'video/webm',
+        });
+        }
     },
     { auto: true },
   ],
 })
 
-test.beforeEach(async ({ context, page, extensionId }) => {
+test.beforeEach(async ({ steps   }) => {
   console.log('setup: beforeEach');
-  const defaultLaunchPagePromise = context.waitForEvent('page');
+  const defaultLaunchPagePromise = steps.context.waitForEvent('page');
   const defaultLaunchPage = await defaultLaunchPagePromise;
   // TODO: defaultLaunchPage.close() sometimes closing actual page instead of extension page
-  // await defaultLaunchPage.close();
-  Steps.initializeSteps(page, context);
-  await Steps.onboarding.goToOnboarding(extensionId, context);
+  // if (page !== defaultLaunchPage) {
+  //   await defaultLaunchPage.close();
+  // }
+  await steps.onboarding.goToOnboarding();
+
 });
 
-test.afterEach(async ({ page }, testInfo) => {
+test.afterEach(async ({ steps   }, testInfo) => {
   console.log('teardown: afterEach');
 
-  const screenshot = await page. screenshot();
+  const screenshot = await steps.page. screenshot();
   await testInfo. attach('screenshot', { body: screenshot, contentType: 'image/ png' });
+
+  await steps.context.close()
 })
 
 

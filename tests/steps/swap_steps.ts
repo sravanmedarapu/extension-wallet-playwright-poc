@@ -6,8 +6,8 @@ import {SwapConfirmPage} from "../pages/swap_confirm_page";
 
 export class SwapSteps extends BaseSteps {
     private swapPage: SwapPage;
-    constructor( page: Page, browserContext: BrowserContext) {
-        super(page, browserContext);
+    constructor(protected page: any, protected context: BrowserContext, protected extensionId: string) {
+        super(page, context, extensionId);
         this.swapPage = new SwapPage(page);
     }
 

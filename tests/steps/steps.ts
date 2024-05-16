@@ -5,17 +5,20 @@ import {ManageCryptoSteps} from "./manage_crypto_steps";
 import {SwapSteps} from "./swap_steps";
 
 export class Steps {
-    static onboarding: OnboardingSteps;
-    static home: HomePageSteps;
-    static settings: SettingsPageSteps;
-    static manageCrypto: ManageCryptoSteps;
-    static swap: SwapSteps;
+    constructor(public page: any, public context: any, private extensionId: string) {
+        this.initializeSteps()
+    }
+    public onboarding: OnboardingSteps;
+    public home: HomePageSteps;
+    public settings: SettingsPageSteps;
+    public manageCrypto: ManageCryptoSteps;
+    public swap: SwapSteps;
 
-    static initializeSteps(page: any, context: any) {
-      this.onboarding = new OnboardingSteps(page);
-      this.home = new HomePageSteps(page);
-      this.settings = new SettingsPageSteps(page);
-      this.manageCrypto = new ManageCryptoSteps(page);
-      this.swap = new SwapSteps(page, context);
+    public initializeSteps() {
+      this.onboarding = new OnboardingSteps(this.page, this.context, this.extensionId);
+      this.home = new HomePageSteps(this.page, this.context, this.extensionId);
+      this.settings = new SettingsPageSteps(this.page, this.context,  this.extensionId);
+      this.manageCrypto = new ManageCryptoSteps(this.page, this.context, this.extensionId);
+      this.swap = new SwapSteps(this.page, this.context, this.extensionId);
     }
   }

@@ -5,14 +5,14 @@ import config from '../utils/config';
 import { log } from 'console';
 
 test.describe('Import wallet', () => {
-    test(`importCustomTokenTest: Importing custom tokens - Ethereum, Tron, Fantom, Arbitrum`, async () => {
+    test(`importCustomTokenTest: Importing custom tokens - Ethereum, Tron, Fantom, Arbitrum`, async ({steps}: {steps: Steps}) => {
         let password = config.get("password")
-        await Steps.onboarding.verifyOnboardingPage();
-        await Steps.onboarding.createNewWallet({ password: password, agreeToShareData: true, agreeToSetTrustWalletAsDefault: true });
-        await Steps.home.closeTipsModalPopup();
+        await steps.onboarding.verifyOnboardingPage();
+        await steps.onboarding.createNewWallet({ password: password, agreeToShareData: true, agreeToSetTrustWalletAsDefault: true });
+        await steps.home.closeTipsModalPopup();
 
-        await Steps.manageCrypto.unsetAllCryptoToggleButtons()
-        await Steps.home.verifyNoCryptoActivatedMessageVisible()
+        await steps.manageCrypto.unsetAllCryptoToggleButtons()
+        await steps.home.verifyNoCryptoActivatedMessageVisible()
         let networkTokens    = getNetworkTokens()
         for(let networkToken of networkTokens) {
             let symbol: string = config.get(networkToken.symbol)
@@ -22,11 +22,11 @@ test.describe('Import wallet', () => {
                 address = address.slice(1, -1);
             }
             log(`Adding token ${symbol} with address ${address} on network ${networkToken.network}`)
-            await Steps.home.clickSearchButton()
-            await Steps.manageCrypto.selectTokenNetwork(networkToken.network, address)
-            await Steps.manageCrypto.validateTokenSymbol(symbol)
-            await Steps.manageCrypto.addToken()
-            await Steps.home.verifyCryptoTokenAddedToHomePage(symbol)
+            await steps.home.clickSearchButton()
+            await steps.manageCrypto.selectTokenNetwork(networkToken.network, address)
+            await steps.manageCrypto.validateTokenSymbol(symbol)
+            await steps.manageCrypto.addToken()
+            await steps.home.verifyCryptoTokenAddedToHomePage(symbol)
         }
     });
 });

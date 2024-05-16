@@ -1,12 +1,12 @@
 import { BaseSteps } from './base_steps';
 import { HomePage } from '../pages/home_page';
-import { expect } from 'playwright/test';
+import {BrowserContext, expect} from 'playwright/test';
 
 export class HomePageSteps extends BaseSteps {
   private homePage: HomePage;
 
-  constructor(page: any) {
-    super(page);
+  constructor(protected page: any, protected context: BrowserContext, protected extensionId: string) {
+    super(page, context, extensionId);
     this.homePage = new HomePage(page);
   }
 

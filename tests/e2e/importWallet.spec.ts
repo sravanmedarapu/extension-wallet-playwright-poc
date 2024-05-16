@@ -8,14 +8,14 @@ test.describe('Import wallet', () => {
     testData.set('24 words', config.get('24WordWalletSeed'));
     let password = config.get("password")
     for (let [key, walletSeed] of testData) {
-        test(`import${key}WordWalletTest: Import a ${key} secret phrase wallet`, async () => {
-            await Steps.onboarding.verifyOnboardingPage();
-            await Steps.onboarding.importOrRecoverWallet(password);
-            await Steps.onboarding.inputSecretPhrase(walletSeed);
-            await Steps.onboarding.clearAndVerifySecretPhrasesCleared();
-            await Steps.onboarding.pasteSecretPhraseAndClickNext(walletSeed);
-            await Steps.onboarding.setShareDatePermissions(false);
-            await Steps.onboarding.verifySuccessfulWalletImport();
+        test(`import${key}WordWalletTest: Import a ${key} secret phrase wallet`, async ({steps}: {steps: Steps}) => {
+            await steps.onboarding.verifyOnboardingPage();
+            await steps.onboarding.importOrRecoverWallet(password);
+            await steps.onboarding.inputSecretPhrase(walletSeed);
+            await steps.onboarding.clearAndVerifySecretPhrasesCleared();
+            await steps.onboarding.pasteSecretPhraseAndClickNext(walletSeed);
+            await steps.onboarding.setShareDatePermissions(false);
+            await steps.onboarding.verifySuccessfulWalletImport();
         });
     }
 });

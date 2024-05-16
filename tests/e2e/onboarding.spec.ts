@@ -2,65 +2,56 @@ import { test, expect } from '../fixtures/fixtures'
 import { Steps } from '../steps/steps';
 import config from "../utils/config";
 
-// test.beforeEach(async ({ context, page, extensionId }) => {
-//   const defaultLaunchPagePromise = context.waitForEvent('page');
-//   const defaultLaunchPage = await defaultLaunchPagePromise;
-//   // TODO: defaultLaunchPage.close() sometimes closing actual page instead of extension page
-//   // await defaultLaunchPage.close();
-//   Steps.initializeSteps(page);
-//   await Steps.onboarding.goToOnboarding(extensionId, context);
-// });
-
 test.describe('Create wallet', () => {
-  test('createWalletAndBackItUpFromHomeScreenTest: backup wallet from banner on home screen', async () => {
+  test('createWalletAndBackItUpFromHomeScreenTest: backup wallet from banner on home screen', async ({steps}: {steps: Steps}) => {
     let password = config.get("password")
-    await Steps.onboarding.verifyOnboardingPage();
-    await Steps.onboarding.createNewWallet({ password: password, agreeToShareData: true, agreeToSetTrustWalletAsDefault: true });
+    await steps.onboarding.verifyOnboardingPage();
+    await steps.onboarding.createNewWallet({ password: password, agreeToShareData: true, agreeToSetTrustWalletAsDefault: true });
 
-    await Steps.home.acceptTipsPopup();
-    await Steps.home.navigateToSettings();
-    
-    await Steps.settings.viewSecretPhrase(password);
-    await Steps.settings.verifySecretPhraseVisible();
+    await steps.home.acceptTipsPopup();
+    await steps.home.navigateToSettings();
 
-    let secretPhrase: string[] = await Steps.settings.downloadAndReadSecretPhrase();
-    
-    await Steps.settings.navigateToHome();
-    await Steps.home.clickOnBackUpBanner();
-    await Steps.settings.backUpWalletByEnteringSecretPhrase(password, secretPhrase);
-    
-    await Steps.home.verifyBackupBannerNotVisible()
+    await steps.settings.viewSecretPhrase(password);
+    await steps.settings.verifySecretPhraseVisible();
+
+    let secretPhrase: string[] = await steps.settings.downloadAndReadSecretPhrase();
+
+    await steps.settings.navigateToHome();
+    await steps.home.clickOnBackUpBanner();
+    await steps.settings.backUpWalletByEnteringSecretPhrase(password, secretPhrase);
+
+    await steps.home.verifyBackupBannerNotVisible()
   })
 
-  test('createWalletTurnOffOptionsTest: Default wallet-OFF, Product Analytics-OFF', async () => {
+  test('createWalletTurnOffOptionsTest: Default wallet-OFF, Product Analytics-OFF', async ({steps}: {steps: Steps}) => {
     let password = config.get("password")
-    await Steps.onboarding.verifyOnboardingPage();
-    await Steps.onboarding.createNewWallet({ 
-      password: password, 
+    await steps.onboarding.verifyOnboardingPage();
+    await steps.onboarding.createNewWallet({
+      password: password,
       agreeToShareData: false ,
       agreeToSetTrustWalletAsDefault: false
     });
 
-    await Steps.home.closeTipsModalPopup();
-    await Steps.home.navigateToSettings();
+    await steps.home.closeTipsModalPopup();
+    await steps.home.navigateToSettings();
 
-    await Steps.settings.verifyProductAnalyticsToggleState({isOn: false});
-    await Steps.settings.verifyTrustWalletAsDefaultToggleState({isOn: false});
+    await steps.settings.verifyProductAnalyticsToggleState({isOn: false});
+    await steps.settings.verifyTrustWalletAsDefaultToggleState({isOn: false});
   })
 
-  test('createWalletTurnOnOptionsTest: Default wallet-ON, Product Analytics-ON', async () => {
+  test('createWalletTurnOnOptionsTest: Default wallet-ON, Product Analytics-ON', async ({steps}: {steps: Steps}) => {
     let password = config.get("password")
-    await Steps.onboarding.verifyOnboardingPage();
-    await Steps.onboarding.createNewWallet({ 
-      password: password, 
+    await steps.onboarding.verifyOnboardingPage();
+    await steps.onboarding.createNewWallet({
+      password: password,
       agreeToShareData: true ,
       agreeToSetTrustWalletAsDefault: true
     });
 
-    await Steps.home.acceptTipsPopup();
-    await Steps.home.navigateToSettings();
+    await steps.home.acceptTipsPopup();
+    await steps.home.navigateToSettings();
 
-    await Steps.settings.verifyProductAnalyticsToggleState({isOn: true});
-    await Steps.settings.verifyTrustWalletAsDefaultToggleState({isOn: true});
+    await steps.settings.verifyProductAnalyticsToggleState({isOn: true});
+    await steps.settings.verifyTrustWalletAsDefaultToggleState({isOn: true});
   })
 })

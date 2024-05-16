@@ -1,6 +1,6 @@
 import { BaseSteps } from './base_steps';
 import { ManageCryptoPage } from '../pages/manage_crypto_page';
-import { expect } from 'playwright/test';
+import {BrowserContext, expect} from 'playwright/test';
 import {HomePage} from "../pages/home_page";
 
 export class ManageCryptoSteps extends BaseSteps {
@@ -8,8 +8,8 @@ export class ManageCryptoSteps extends BaseSteps {
 
   private homePage: HomePage
 
-  constructor(page: any) {
-    super(page);
+  constructor(protected page: any, protected context: BrowserContext, protected extensionId: string) {
+    super(page, context, extensionId);
     this.manageCryptoPage = new ManageCryptoPage(page);
     this.homePage = new HomePage(page);
   }

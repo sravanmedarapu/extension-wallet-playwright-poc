@@ -1,13 +1,13 @@
 import { SettingsPage } from '../pages/settings_page';
-import { expect } from 'playwright/test';
+import {BrowserContext, expect} from 'playwright/test';
 import { getSecretPhraseFromFile } from '../utils/file_utils';
 import { BaseSteps } from './base_steps';
 
 export class SettingsPageSteps extends BaseSteps {
   private settingsPage: SettingsPage;
 
-  constructor(page: any) {
-    super(page);
+  constructor(protected page: any, protected context: BrowserContext, protected extensionId: string) {
+    super(page, context, extensionId);
     this.settingsPage = new SettingsPage(page);
   }
 

@@ -39,7 +39,7 @@ export default defineConfig({
     video: 'retain-on-failure',
     screenshot: 'retain-on-failure'
   },
-  timeout:  3 * 60 * 1000,
+  timeout: process.env.CI ?  3 * 60 * 1000 : 2 * 60 * 1000,
 
   /* Configure projects for major browsers */
   projects: [

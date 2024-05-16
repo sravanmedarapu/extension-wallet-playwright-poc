@@ -4,13 +4,16 @@ import { HomePage } from '../pages/home_page';
 import { BrowserContext, expect } from 'playwright/test';
 import { BaseSteps } from './base_steps';
 import {Steps} from "./steps";
+import {HomePageSteps} from "./home_steps";
 
 export class OnboardingSteps extends BaseSteps {
   private onboardingPage: OnboardingPage;
+  private homeSteps: HomePageSteps;
 
-  constructor(page: any) {
-    super(page);
+  constructor(protected page: any, protected context: BrowserContext, protected extensionId: string) {
+    super(page, context, extensionId);
     this.onboardingPage = new OnboardingPage(page);
+    this.homeSteps = new HomePageSteps(page, context, extensionId);
   }
 
   async verifyOnboardingPage() {
@@ -31,12 +34,12 @@ export class OnboardingSteps extends BaseSteps {
 
   async importWalletByEnteringSecretPhrase({password, walletSeed, agreeToShareData, setTrustWalletAsDefault}: {password: string, walletSeed: string, agreeToShareData: boolean, setTrustWalletAsDefault: boolean
   }) {
-    await Steps.onboarding.importOrRecoverWallet(password);
-    await Steps.onboarding.pasteSecretPhraseAndClickNext(walletSeed);
-    await Steps.onboarding.setShareDatePermissions(agreeToShareData);
+    await this.importOrRecoverWallet(password);
+    await this.pasteSecretPhraseAndClickNext(walletSeed);
+    await this.setShareDatePermissions(agreeToShareData);
     await this.setTrustWalletAsDefaultWallet(setTrustWalletAsDefault)
     await this.openWallet();
-    await Steps.home.closeTipsModalPopup();
+    await this.homeSteps.closeTipsModalPopup();
   }
 
   async openWallet() {
